@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: flask-app
+  namespace: default  # Adjust the namespace as per your setup
+spec:
+  destination:
+    server: https://kubernetes.default.svc  # Kubernetes API server URL
+    namespace: default  # Target namespace for deployment
+  project: default  # Argo CD project name
+  source:
+    repoURL: https://github.com/Tamizh-Thiru/argo.git  # GitHub repository URL
+    targetRevision: HEAD  # Target revision of the Git repository
+    path: dev  # Path to your Kubernetes manifest files (deployment.yaml and service.yaml)
+  syncPolicy:
+    automated:
+      prune: true  # Prune resources that are no longer in the Git repository
+      selfHeal: true  # Automatically reconcile differences
+    syncOptions:
+    - Validate=false  # Optional: Disable validation during sync
